@@ -1,0 +1,29 @@
+{
+  "name": "sms.lambda.squads",
+  "version": "1.0.0",
+  "description": "SMS-Squads management",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@bitbucket.org/alphacoreteam/sms.lambda.squads.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/alphacoreteam/sms.lambda.squads#readme",
+  "engines": {
+    "node": "6.2.0"
+  },
+  "dependencies": {
+    
+  },
+  "devDependencies": {
+    "aws-sdk": "^2.146.0",
+    "chai": "^4.1.2",
+    "dotenv": "^4.0.0",
+    "dynalite": "^1.2.0",
+    "mocha": "^4.0.1"
+  }
+}
