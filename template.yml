@@ -1,0 +1,65 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Squads management system
+Resources:        
+  postSquadsLamdba:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: index.post
+      Runtime: nodejs6.10
+      Timeout: 1
+      MemorySize: 128
+      CodeUri: .
+      Policies: 
+        - AmazonDynamoDBFullAccess
+      Environment:
+        Variables:
+          SQUADS_TABLE_NAME:
+            Fn::ImportValue:
+              !Sub ${DynamoDBStack}-SquadsDynamoDBTable
+      Events:
+        postSquadsEvent:
+          Type: Api
+          Properties:
+            Path: /squads
+            Method: post
+            RestApiId : !Ref SMSApi
+
+  SMSApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      DefinitionUri: ./aws-swagger.yml
+      StageName: dev
+      Variables:
+        postSquadsLambda: !Ref postSquadsLambda
+
+  SMSBasePathMapping:
+      Type: AWS::ApiGateway::BasePathMapping
+      DependsOn:
+        - SMSApidevStage
+      Properties:
+        DomainName: !Sub ${ApiDomainName}
+        BasePath: !Sub ${ApiBasePath}
+        RestApiId: !Ref SMSApi
+        Stage: dev
+
+  SMSUsagePlan:
+    Type: AWS::ApiGateway::UsagePlan
+    DependsOn:
+        - SMSApidevStage
+    Properties:
+      ApiStages:
+        - ApiId: !Ref SMSApi
+          Stage: dev
+      Throttle:
+        BurstLimit: 500
+        RateLimit: 50
+      UsagePlanName:
+        Fn::Join: [
+            "-",
+            [
+              !Ref AWS::StackName,
+              "usage",
+              "plan"
+            ]
+          ]
