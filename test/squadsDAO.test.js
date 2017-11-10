@@ -1,3 +1,5 @@
+/*global describe, it, before, beforeEach, after, afterEach */
+
 'use strict';
 
 require('dotenv').config({path: './test/.env'});
