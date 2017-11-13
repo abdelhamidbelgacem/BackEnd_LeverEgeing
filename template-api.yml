@@ -1,6 +1,13 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: Squads management system
+Parameters:
+  DynamoDBStack:
+    Type: String
+  ApiBasePath:
+    Type: String
+    Default: v1
+
 Resources:        
   postSquadsLambda:
     Type: AWS::Serverless::Function
@@ -28,29 +35,43 @@ Resources:
   SMSApi:
     Type: AWS::Serverless::Api
     Properties:
-      DefinitionUri: ./aws-swagger.yml
-      StageName: dev
+      DefinitionUri: ./sms-squads-api-swagger.yml
+      StageName: deployed
       Variables:
         postSquadsLambda: !Ref postSquadsLambda
+
+  SMSDomainName:
+    Type: AWS::ApiGateway::DomainName
+    Properties: 
+      CertificateArn: arn:aws:acm:us-east-1:115936594324:certificate/2ea697a4-582d-4a17-9db8-189a98bc1121
+      DomainName: 
+        Fn::Join: [
+          ".",
+          [
+            !Ref "AWS::StackName",
+            "sms.ifsalpha.com"
+          ]
+        ]
 
   SMSBasePathMapping:
       Type: AWS::ApiGateway::BasePathMapping
       DependsOn:
-        - SMSApidevStage
+        - SMSApideployedStage
+        - SMSDomainName
       Properties:
-        DomainName: !Sub ${ApiDomainName}
+        DomainName: !Ref SMSDomainName
         BasePath: !Sub ${ApiBasePath}
         RestApiId: !Ref SMSApi
-        Stage: dev
+        Stage: deployed
 
   SMSUsagePlan:
     Type: AWS::ApiGateway::UsagePlan
     DependsOn:
-        - SMSApidevStage
+        - SMSApideployedStage
     Properties:
       ApiStages:
         - ApiId: !Ref SMSApi
-          Stage: dev
+          Stage: deployed
       Throttle:
         BurstLimit: 500
         RateLimit: 50
@@ -58,7 +79,7 @@ Resources:
         Fn::Join: [
             "-",
             [
-              !Ref AWS::StackName,
+              !Ref "AWS::StackName",
               "usage",
               "plan"
             ]
