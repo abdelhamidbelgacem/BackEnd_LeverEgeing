@@ -10,6 +10,10 @@ class SquadsDAO {
     constructor() {
     }
 
+    /**
+     * Saves a new squad
+     * @param {*} squad 
+     */
     post(squad) {
         var _self = this;
         
