@@ -7,6 +7,11 @@ class SquadsService {
         this.squadsDAO = squadsDAO;
     }
 
+    /**
+     * Creates a new squad
+     * @param {*} squad 
+     * @throws appErrors.NotAcceptableError if new squads shortname is already used
+     */
     post(squad) {
         var _self = this;
         return _self.squadsDAO.post(squad)
