@@ -8,6 +8,7 @@ let squadsDAO = new SquadsDAO();
 const SquadsService = require('squadsService');
 let squadsService = new SquadsService(squadsDAO);
 
+/** POST /squads handler */
 exports.post = (event, context, callback) => {
     squadsService.post(JSON.parse(event.body))
         .then( (item) => {
