@@ -1,0 +1,83 @@
+swagger: '2.0'
+info:
+  version: '1.0'
+  title: 'SMS-Squads'
+schemes:
+  - https
+consumes:
+  - application/json
+produces:
+  - application/json
+
+paths:
+  /squads:
+    post:
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/Squad'
+      responses:
+        '201':
+          description: Squad is created 
+          headers:
+            location:
+              schema:
+                type: string
+          content:
+            schema:
+              $ref: '#/definitions/Squad'
+        '406':
+          description: Not acceptable, ie, squad's short name already exists
+          schema:
+            oneOf:
+              - $ref: '#/definitions/ErrorList'
+              - type: string
+      x-amazon-apigateway-integration:
+        uri:
+          arn:aws:apigateway:eu-central-1:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-central-1:115936594324:function:${stageVariables.postSquadsLambda}/invocations
+        passthroughBehavior: when_no_match
+        httpMethod: POST
+        type: aws_proxy
+
+definitions:
+  Error:
+    type: object
+    properties:
+      code:
+        type: string
+      message:
+        type: string
+      additionalProperties:
+        type: string
+  ErrorList:
+    type: array
+    items:
+      $ref: '#/definitions/Error'
+
+  Link:
+    type: object
+    properties:
+      href: 
+        type: string
+      linkBuilder:
+        type: string
+      linkBuilderParameters:
+        type: object
+        additionalProperties:
+          type: string
+
+  Squad:
+    type: object
+    properties:
+      _links:
+        type: object
+        properties:
+          self:
+            $ref: '#/definitions/Link'
+      name: 
+        type: string
+      shortName:
+        type: string
+      

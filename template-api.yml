@@ -1,0 +1,86 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Squads management system
+Parameters:
+  DynamoDBStack:
+    Type: String
+  ApiBasePath:
+    Type: String
+    Default: v1
+
+Resources:        
+  postSquadsLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: index.post
+      Runtime: nodejs6.10
+      Timeout: 1
+      MemorySize: 128
+      CodeUri: .
+      Policies: 
+        - AmazonDynamoDBFullAccess
+      Environment:
+        Variables:
+          SQUADS_TABLE_NAME:
+            Fn::ImportValue:
+              !Sub ${DynamoDBStack}-squadsDynamoDBTable
+      Events:
+        postSquadsEvent:
+          Type: Api
+          Properties:
+            Path: /squads
+            Method: post
+            RestApiId : !Ref SMSApi
+
+  SMSApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      DefinitionUri: ./sms-squads-api-swagger.yml
+      StageName: deployed
+      Variables:
+        postSquadsLambda: !Ref postSquadsLambda
+
+  SMSDomainName:
+    Type: AWS::ApiGateway::DomainName
+    Properties: 
+      CertificateArn: arn:aws:acm:us-east-1:115936594324:certificate/2ea697a4-582d-4a17-9db8-189a98bc1121
+      DomainName: 
+        Fn::Join: [
+          ".",
+          [
+            !Ref "AWS::StackName",
+            "sms.ifsalpha.com"
+          ]
+        ]
+
+  SMSBasePathMapping:
+      Type: AWS::ApiGateway::BasePathMapping
+      DependsOn:
+        - SMSApideployedStage
+        - SMSDomainName
+      Properties:
+        DomainName: !Ref SMSDomainName
+        BasePath: !Sub ${ApiBasePath}
+        RestApiId: !Ref SMSApi
+        Stage: deployed
+
+  SMSUsagePlan:
+    Type: AWS::ApiGateway::UsagePlan
+    DependsOn:
+        - SMSApideployedStage
+    Properties:
+      ApiStages:
+        - ApiId: !Ref SMSApi
+          Stage: deployed
+      Throttle:
+        BurstLimit: 500
+        RateLimit: 50
+      UsagePlanName:
+        Fn::Join: [
+            "-",
+            [
+              !Ref "AWS::StackName",
+              "usage",
+              "plan"
+            ]
+          ]

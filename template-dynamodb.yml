@@ -1,0 +1,30 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Squads management system
+Resources:
+  squadsDynamoDBTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+      - AttributeName: shortName
+        AttributeType: S
+      KeySchema:
+      - AttributeName: shortName
+        KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: '5'
+        WriteCapacityUnits: '5'
+      StreamSpecification:
+        StreamViewType: NEW_AND_OLD_IMAGES
+
+Outputs:
+  squadsDynamoDBTableOutput:
+    Value: !Ref squadsDynamoDBTable
+    Export:
+      Name: !Sub "${AWS::StackName}-squadsDynamoDBTable"
+
+  squadsDynamoDBTableStreamOutput:
+    Value: !GetAtt squadsDynamoDBTable.StreamArn
+    Export:
+      Name: !Sub "${AWS::StackName}-squadsDynamoDBTableStream"
+  
