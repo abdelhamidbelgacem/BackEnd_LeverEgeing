@@ -16,9 +16,12 @@ let feedsService = new FeedsService(feedsDAO);
 exports.get = (event, context, callback) => {
     feedsService.get(JSON.parse(event.body))
         .then( (item) => {
+			console.log("##########VERIFY LAMBDA",item);
             callback(
                 null, 
                 {
+					
+
                     statusCode: 201,
                     headers: {location: item._links.self.href},
                     body: JSON.stringify(item)
@@ -27,6 +30,7 @@ exports.get = (event, context, callback) => {
         .catch( (error) => { 
             console.log(error);
             if (error instanceof appErrors.AppError) {
+				console.log("##########ERROR",item);
                 callback(
                     null, 
                     {
