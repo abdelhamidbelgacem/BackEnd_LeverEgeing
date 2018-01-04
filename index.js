@@ -6,11 +6,11 @@
 
 const appErrors = require('appErrors');
 
-//const feedsDAO = require('feedsDAO');
-let feedsDAO = new feedsDAO();
+const FeedsDAO = require('feedsDAO');
+let feedsDAO = new FeedsDAO();
 
-//const feedsService = require('feedsService');
-let feedsService = new feedsService(feedsDAO);
+const FeedsService = require('feedsService');
+let feedsService = new FeedsService(feedsDAO);
 
 /** POST /feeds handler */
 exports.get = (event, context, callback) => {
