@@ -126,7 +126,7 @@ definitions:
         type: object
         properties:
           self:
-            $ref: '#/definitions/Link/{id}'
+            $ref: '#/definitions/Link'
       name: 
         type: string
       shortName:
