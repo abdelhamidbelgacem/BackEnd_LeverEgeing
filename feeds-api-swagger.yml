@@ -13,34 +13,34 @@ produces:
 
 paths:
   /feeds:
-    post:
+    GET:
       parameters:
         - in: body
           name: body
           required: true
           schema:
-            $ref: '#/definitions/Squad'
+            $ref: '#/definitions/Feed'
       responses:
         '201':
-          description: Squad is created 
+          description: Feed is created 
           headers:
             location:
               schema:
                 type: string
           content:
             schema:
-              $ref: '#/definitions/Squad'
+              $ref: '#/definitions/Feed'
         '406':
-          description: Not acceptable, ie, squad's short name already exists
+          description: Not acceptable, ie, Feed's short name already exists
           schema:
             oneOf:
               - $ref: '#/definitions/ErrorList'
               - type: string
       x-amazon-apigateway-integration:
         uri:
-          arn:aws:apigateway:eu-central-1:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-central-1:115936594324:function:${stageVariables.postfeedsLambda}/invocations
+          arn:aws:apigateway:eu-central-1:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-central-1:115936594324:function:${stageVariables.getFeedsLambda}/invocations
         passthroughBehavior: when_no_match
-        httpMethod: POST
+        httpMethod: GET
         type: aws_proxy
 
 definitions:
@@ -70,7 +70,7 @@ definitions:
         additionalProperties:
           type: string
 
-  Squad:
+  Feed:
     type: object
     properties:
       _links:
