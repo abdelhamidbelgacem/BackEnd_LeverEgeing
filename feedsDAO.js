@@ -1,23 +1,29 @@
+
+/*
+@author :abdelhamid.belgacem
+*/
+
+
 'use strict';
 
 const AWS = require('aws-sdk');
 
 const dynamo = new AWS.DynamoDB.DocumentClient();
 
-const tableName = process.env.SQUADS_TABLE_NAME;
+const tableName = process.env.FEEDS_TABLE_NAME;
 
-class SquadsDAO {
+class feedsDAO {
     constructor() {
     }
 
     /**
-     * Saves a new squad
-     * @param {*} squad 
+     * Saves a new feed
+     * @param {*} feed 
      */
-    post(squad) {
+    get(feed) {
         var _self = this;
         
-        let item = squad;
+        let item = feed;
 
         let params = { 
             TableName: tableName,
@@ -41,4 +47,4 @@ class SquadsDAO {
     }
 }
 
-module.exports = SquadsDAO;
+module.exports = feedsDAO;

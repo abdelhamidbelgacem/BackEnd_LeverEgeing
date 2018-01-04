@@ -1,24 +1,22 @@
 {
-  "name": "sms.lambda.squads",
+  "name": "LVA.lambda.feeds",
   "version": "1.0.0",
-  "description": "SMS-Squads management",
+  "description": "LVA-Feeds management",
   "main": "index.js",
   "scripts": {
     "test": "mocha"
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@bitbucket.org/alphacoreteam/sms.lambda.squads.git"
+    "url": "git+ssh://abdelhamidb@bitbucket.org/ifsalpha/lever-ageing-backend.git"
   },
-  "author": "",
-  "license": "ISC",
-  "homepage": "https://bitbucket.org/alphacoreteam/sms.lambda.squads#readme",
+  "author": "abdelhamid.belgacem",
+  "license": "",
+  "homepage": "",
   "engines": {
     "node": "6.2.0"
   },
-  "dependencies": {
-    
-  },
+  "dependencies": {},
   "devDependencies": {
     "aws-sdk": "^2.146.0",
     "chai": "^4.1.2",

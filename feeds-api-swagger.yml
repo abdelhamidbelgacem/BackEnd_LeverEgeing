@@ -1,7 +1,9 @@
+
+#@author :abdelhamid.belgacem
 swagger: '2.0'
 info:
   version: '1.0'
-  title: 'SMS-Squads'
+  title: 'SMS-feeds'
 schemes:
   - https
 consumes:
@@ -10,7 +12,7 @@ produces:
   - application/json
 
 paths:
-  /squads:
+  /feeds:
     post:
       parameters:
         - in: body
@@ -36,7 +38,7 @@ paths:
               - type: string
       x-amazon-apigateway-integration:
         uri:
-          arn:aws:apigateway:eu-central-1:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-central-1:115936594324:function:${stageVariables.postSquadsLambda}/invocations
+          arn:aws:apigateway:eu-central-1:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-central-1:115936594324:function:${stageVariables.postfeedsLambda}/invocations
         passthroughBehavior: when_no_match
         httpMethod: POST
         type: aws_proxy

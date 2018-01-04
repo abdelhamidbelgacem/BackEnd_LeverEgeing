@@ -1,16 +1,20 @@
+/*
+@author :abdelhamid.belgacem
+*/
+
 'use strict';
 
 const appErrors = require('appErrors');
 
-const SquadsDAO = require('squadsDAO');
-let squadsDAO = new SquadsDAO();
+//const feedsDAO = require('feedsDAO');
+let feedsDAO = new feedsDAO();
 
-const SquadsService = require('squadsService');
-let squadsService = new SquadsService(squadsDAO);
+//const feedsService = require('feedsService');
+let feedsService = new feedsService(feedsDAO);
 
-/** POST /squads handler */
-exports.post = (event, context, callback) => {
-    squadsService.post(JSON.parse(event.body))
+/** POST /feeds handler */
+exports.get = (event, context, callback) => {
+    feedsService.get(JSON.parse(event.body))
         .then( (item) => {
             callback(
                 null, 

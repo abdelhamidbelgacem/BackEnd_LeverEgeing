@@ -1,6 +1,8 @@
+#@author :abdelhamid.belgacem
+
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
-Description: Squads management system
+Description: Feeds management system
 Parameters:
   DynamoDBStack:
     Type: String
@@ -9,10 +11,10 @@ Parameters:
     Default: v1
 
 Resources:        
-  postSquadsLambda:
+  getFeedsLambda:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: index.post
+      Handler: index.get
       Runtime: nodejs6.10
       Timeout: 1
       MemorySize: 128
@@ -21,56 +23,58 @@ Resources:
         - AmazonDynamoDBFullAccess
       Environment:
         Variables:
-          SQUADS_TABLE_NAME:
+          Feeds_TABLE_NAME:
             Fn::ImportValue:
-              !Sub ${DynamoDBStack}-squadsDynamoDBTable
+              !Sub ${DynamoDBStack}-FeedsDynamoDBTable
       Events:
-        postSquadsEvent:
+        getFeedsEvent:
           Type: Api
           Properties:
-            Path: /squads
-            Method: post
-            RestApiId : !Ref SMSApi
+            Path: /Feeds
+            Method: get
+            RestApiId : !Ref FeedsApi
 
-  SMSApi:
+  FeedsApi:
     Type: AWS::Serverless::Api
     Properties:
-      DefinitionUri: ./sms-squads-api-swagger.yml
+      DefinitionUri: ./feeds-api-swagger.yml
       StageName: deployed
       Variables:
-        postSquadsLambda: !Ref postSquadsLambda
+        getFeedsLambda: !Ref getFeedsLambda
 
-  SMSDomainName:
+  FeedsDomainName:
     Type: AWS::ApiGateway::DomainName
     Properties: 
-      CertificateArn: arn:aws:acm:us-east-1:115936594324:certificate/2ea697a4-582d-4a17-9db8-189a98bc1121
+    
+    #arn:aws:lambda:eu-central-1:698181446882:function:GetFeeds
+        CertificateArn: arn:aws:lambda:eu-central-1:698181446882:certificate/2ea697a4-582d-4a17-9db8-189a98bc1121
       DomainName: 
         Fn::Join: [
           ".",
           [
             !Ref "AWS::StackName",
-            "sms.ifsalpha.com"
+            "feeds.ifsalpha.com"
           ]
         ]
 
-  SMSBasePathMapping:
+  FeedsBasePathMapping:
       Type: AWS::ApiGateway::BasePathMapping
       DependsOn:
-        - SMSApideployedStage
-        - SMSDomainName
+        - FeedsApideployedStage
+        - FeedsDomainName
       Properties:
-        DomainName: !Ref SMSDomainName
+        DomainName: !Ref FeedsDomainName
         BasePath: !Sub ${ApiBasePath}
-        RestApiId: !Ref SMSApi
+        RestApiId: !Ref FeedsApi
         Stage: deployed
 
-  SMSUsagePlan:
+  FeedsUsagePlan:
     Type: AWS::ApiGateway::UsagePlan
     DependsOn:
-        - SMSApideployedStage
+        - FeedsApideployedStage
     Properties:
       ApiStages:
-        - ApiId: !Ref SMSApi
+        - ApiId: !Ref FeedsApi
           Stage: deployed
       Throttle:
         BurstLimit: 500

@@ -1,3 +1,5 @@
+#@author :abdelhamid.belgacem
+
 # deploy DB
 aws cloudformation package --template-file template-dynamodb.yml --output-template-file out-template-dynamodb.yml --s3-bucket sms-hello-deploy
 aws cloudformation deploy --template-file out-template-dynamodb.yml --stack-name aly-sms-dynamodb

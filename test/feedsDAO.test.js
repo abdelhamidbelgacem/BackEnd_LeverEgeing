@@ -1,3 +1,9 @@
+/*
+@author :abdelhamid.belgacem
+
+*/
+
+
 /*global describe, it, before, beforeEach, after, afterEach */
 
 'use strict';
@@ -8,15 +14,15 @@ var TestUtils = require('./testUtils');
 var assert = require('chai').assert;
 var should = require('chai').should();
 
-var SquadsDAO;
+var FeedsDAO;
 
-describe("Squad DAO test", () => {
+describe("Feed DAO test", () => {
 
     before( (done) => {
         //this.timeout(50000);
         TestUtils.mockDB()
             .then(function (data) {
-                SquadsDAO = require('../squadsDAO');
+                FeedsDAO = require('../FeedsDAO');
                 done();
             })
             .catch(function (err) {
@@ -31,11 +37,11 @@ describe("Squad DAO test", () => {
     });
 
 
-    it('should save a squad', (done) => {
-        let squadsDAO = new SquadsDAO();
-        squadsDAO.post({
+    it('should save a Feed', (done) => {
+        let FeedsDAO = new FeedsDAO();
+        FeedsDAO.get({
             shortName: 'CTE',
-            name: 'Core team'
+            name: 'LVA Team'
         })
             .then((data) => {
                 done();
@@ -45,8 +51,8 @@ describe("Squad DAO test", () => {
             });
     });
     it('should raise an error', (done) => {
-        let squadsDAO = new SquadsDAO();
-        squadsDAO.post({
+        let FeedsDAO = new FeedsDAO();
+        FeedsDAO.post({
             shortName: 'CTE',
             name: 'Core team'
         })

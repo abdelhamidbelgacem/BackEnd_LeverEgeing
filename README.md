@@ -1,1 +1,1 @@
-# SMS - Squads management 
+# LVA - Feeds management 
