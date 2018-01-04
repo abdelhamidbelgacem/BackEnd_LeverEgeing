@@ -1,0 +1,135 @@
+
+
+#@author :abdelhamid.belgacem
+
+swagger: '2.0'
+info:
+  version: '1.0'
+  title: 'LVA-Profiles'
+schemes:
+  - https
+consumes:
+  - application/json
+produces:
+  - application/json
+
+paths:
+  /Profiles:
+    POST:
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/Profile'
+      responses:
+        '201':
+          description: POST All Profiles  
+          headers:
+            location:
+              schema:
+                type: string
+          content:
+            schema:
+              $ref: '#/definitions/Profile'
+        '406':
+          description: Not acceptable, ie, Profile's short name already exists
+          schema:
+            oneOf:
+              - $ref: '#/definitions/ErrorList'
+              - type: string
+      x-amazon-apigateway-integration:
+        uri:
+          arn:aws:apigateway:eu-central-1:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-central-1:698181446882:function:${stageVariables.POSTProfilesLambda}/invocations
+        passthroughBehavior: when_no_match
+        httpMethod: POST
+        type: aws_proxy
+
+        
+    /Profiles:
+    PATCH:
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/Profile/{id}'
+      responses:
+        '201':
+          description: Update  Profile {id}  
+          headers:
+            location:
+              schema:
+                type: string
+          content:
+            schema:
+              $ref: '#/definitions/Profile/{id}'
+        '406':
+          description: Not acceptable, ie, Profile's short name already exists
+          schema:
+            oneOf:
+              - $ref: '#/definitions/ErrorList'
+              - type: string
+      x-amazon-apigateway-integration:
+        uri:
+          arn:aws:apigateway:eu-central-1:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-central-1:698181446882:function:${stageVariables.PATCHProfilesLambda}/invocations
+        passthroughBehavior: when_no_match
+        httpMethod: PATCH
+        type: aws_proxy
+        
+        
+        
+definitions:
+  Error:
+    type: object
+    properties:
+      code:
+        type: string
+      message:
+        type: string
+      additionalProperties:
+        type: string
+  ErrorList:
+    type: array
+    items:
+      $ref: '#/definitions/Error'
+
+  Link:
+    type: object
+    properties:
+      href: 
+        type: string
+      linkBuilder:
+        type: string
+      linkBuilderParameters:
+        type: object
+        additionalProperties:
+          type: string
+
+  Profile:
+    type: object
+    properties:
+      _links:
+        type: object
+        properties:
+          self:
+            $ref: '#/definitions/Link'
+      name: 
+        type: string
+      shortName:
+        type: string
+        
+        Profile:
+    type: object
+    properties:
+      _links:
+        type: object
+        properties:
+          self:
+            $ref: '#/definitions/Link/{id}'
+      name: 
+        type: string
+      shortName:
+        type: string
+      
+      

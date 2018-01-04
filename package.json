@@ -1,7 +1,7 @@
 {
-  "name": "LVA.lambda.feeds",
+  "name": "LVA.lambda",
   "version": "1.0.0",
-  "description": "LVA-Feeds management",
+  "description": "LVA- management",
   "main": "index.js",
   "scripts": {
     "test": "mocha"

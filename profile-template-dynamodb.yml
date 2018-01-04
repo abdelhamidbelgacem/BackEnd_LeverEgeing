@@ -1,9 +1,8 @@
-
 AWSTemplateFormatVersion: '2017-09-09'
 Transform: AWS::Serverless-2016-10-31
-Description: feeds management system
+Description: profiles management system
 Resources:
-  feedsDynamoDBTable:
+  profilesDynamoDBTable:
     Type: AWS::DynamoDB::Table
     Properties:
       AttributeDefinitions:
@@ -19,13 +18,13 @@ Resources:
         StreamViewType: NEW_AND_OLD_IMAGES
 
 Outputs:
-  feedsDynamoDBTableOutput:
-    Value: !Ref feedsDynamoDBTable
+  profilesDynamoDBTableOutput:
+    Value: !Ref profilesDynamoDBTable
     Export:
-      Name: !Sub "${AWS::StackName}-feedsDynamoDBTable"
+      Name: !Sub "${AWS::StackName}-profilesDynamoDBTable"
 
-  feedsDynamoDBTableStreamOutput:
-    Value: !GetAtt feedsDynamoDBTable.StreamArn
+  profilesDynamoDBTableStreamOutput:
+    Value: !GetAtt profilesDynamoDBTable.StreamArn
     Export:
-      Name: !Sub "${AWS::StackName}-feedsDynamoDBTableStream"
+      Name: !Sub "${AWS::StackName}-profilesDynamoDBTableStream"
   

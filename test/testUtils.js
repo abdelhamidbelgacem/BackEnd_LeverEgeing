@@ -55,4 +55,45 @@ module.exports.mockDB = () => {
             });
         });
     });
+	
+	
+	
+	 var dynamodb = new AWS.DynamoDB();
+
+    return new Promise((resolve, reject) => {
+        dynaliteServer.listen(8080, function (err) {
+            dynamodb.listTables({}, function (err, data) {
+                if (err) console.log(err, err.stack); // an error occurred
+                else {
+                    if (data.TableNames.length <= 0) {
+                        dynamodb.createTable({
+                            TableName: "profiles",
+                            KeySchema: [
+                                { AttributeName: "shortName", KeyType: "HASH" }  //Partition key
+                            ],
+                            AttributeDefinitions: [
+                                { AttributeName: "shortName", AttributeType: "S" }
+                            ],
+                            ProvisionedThroughput: {
+                                ReadCapacityUnits: 10,
+                                WriteCapacityUnits: 10
+                            }
+                        },
+                            function (err, data) {
+                                if (err) {
+                                    console.error("Unable to create table. Error JSON:", JSON.stringify(err, null, 2));
+                                    reject(err);
+                                } else {
+                                    setTimeout(() => {
+                                        resolve(data);
+                                    }, 1000);
+                                }
+                            });
+                    }
+                    else { resolve(); }
+                }
+            });
+        });
+    });
+	
 };

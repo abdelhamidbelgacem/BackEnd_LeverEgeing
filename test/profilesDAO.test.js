@@ -4,7 +4,9 @@
 */
 
 
+
 /*global describe, it, before, beforeEach, after, afterEach */
+
 
 'use strict';
 
@@ -14,15 +16,15 @@ var TestUtils = require('./testUtils');
 var assert = require('chai').assert;
 var should = require('chai').should();
 
-var feedsDAO;
+var ProfilesDAO;
 
-describe("Feed DAO test", () => {
+describe("Profile DAO test", () => {
 
     before( (done) => {
         //this.timeout(50000);
         TestUtils.mockDB()
             .then(function (data) {
-                feedsDAO = require('../feedsDAO');
+                ProfilesDAO = require('../ProfilesDAO');
                 done();
             })
             .catch(function (err) {
@@ -37,9 +39,9 @@ describe("Feed DAO test", () => {
     });
 
 
-    it('should save a Feed', (done) => {
-        let feedsDAO = new feedsDAO();
-        feedsDAO.get({
+    it('should save a Profile', (done) => {
+        let ProfilesDAO = new ProfilesDAO();
+        ProfilesDAO.get({
             shortName: 'CTE',
             name: 'LVA Team'
         })
@@ -51,13 +53,13 @@ describe("Feed DAO test", () => {
             });
     });
     it('should raise an error', (done) => {
-        let feedsDAO = new feedsDAO();
-        feedsDAO.post({
+        let ProfilesDAO = new ProfilesDAO();
+        ProfilesDAO.post({
             shortName: 'CTE',
-            name: 'Core team'
+            name: 'LVA team'
         })
             .then((data) => {
-                done("The team already exists, it should not be saved");
+                done("The LVA team already exists, it should not be saved");
             })
             .catch((error) => {
                 done();

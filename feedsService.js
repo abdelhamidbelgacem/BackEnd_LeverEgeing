@@ -1,3 +1,5 @@
+
+
 'use strict';
 
 const appErrors = require('./appErrors');
@@ -12,9 +14,9 @@ class feedsService {
      * @param {*} feed 
      * @throws appErrors.NotAcceptableError if new feeds shortname is already used
      */
-    post(feed) {
+    get(feed) {
         var _self = this;
-        return _self.feedsDAO.post(feed)
+        return _self.feedsDAO.get(feed)
             .then((item) => {
                 item._links = {
                     self: {
