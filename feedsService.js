@@ -1,6 +1,6 @@
 'use strict';
 
-const appErrors = require('appErrors');
+const appErrors = require('./appErrors');
 
 class feedsService {
     constructor(feedsDAO) {

@@ -4,12 +4,12 @@
 
 'use strict';
 
-const appErrors = require('appErrors');
+const appErrors = require('./appErrors');
 
-const FeedsDAO = require('feedsDAO');
+const FeedsDAO = require('./feedsDAO');
 let feedsDAO = new FeedsDAO();
 
-const FeedsService = require('feedsService');
+const FeedsService = require('./feedsService');
 let feedsService = new FeedsService(feedsDAO);
 
 /** POST /feeds handler */
