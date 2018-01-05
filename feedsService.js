@@ -11,17 +11,17 @@ class feedsService {
 
     /**
      * Creates a new feed
-     * @param {*} feed 
+     * @param {*} idProfile 
      * @throws appErrors.NotAcceptableError if new feeds shortname is already used
      */
-    get(feed) {
+    get(idProfile) {
         var _self = this;
-        return _self.feedsDAO.get(feed)
+        return _self.feedsDAO.get(idProfile)
             .then((item) => {
                 item._links = {
                     self: {
                         href: '/feeds/' + item.shortName,
-                        linkBuilder: '/feeds/{feed}',
+                        linkBuilder: '/feeds/{idProfile}',
                         linkBuilderParameters: {
                             feed: item.shortName
                         }

@@ -14,7 +14,7 @@ var TestUtils = require('./testUtils');
 var assert = require('chai').assert;
 var should = require('chai').should();
 
-var feedsDAO;
+var FeedsDAO;
 
 describe("Feed DAO test", () => {
 
@@ -22,7 +22,7 @@ describe("Feed DAO test", () => {
         //this.timeout(50000);
         TestUtils.mockDB()
             .then(function (data) {
-                feedsDAO = require('../feedsDAO');
+                FeedsDAO = require('../feedsDAO');
                 done();
             })
             .catch(function (err) {
@@ -37,9 +37,10 @@ describe("Feed DAO test", () => {
     });
 
 
-    it('should save a Feed', (done) => {
-        let feedsDAO = new feedsDAO();
-        feedsDAO.get({
+    it('should get a Feed', (done) => {
+        let feedsDAO = new FeedsDAO();
+        let id=1;
+        feedsDAO.get(id)({
             shortName: 'CTE',
             name: 'LVA Team'
         })
@@ -51,8 +52,8 @@ describe("Feed DAO test", () => {
             });
     });
     it('should raise an error', (done) => {
-        let feedsDAO = new feedsDAO();
-        feedsDAO.post({
+        let feedsDAO = new FeedsDAO();
+        feedsDAO.get(id)({
             shortName: 'CTE',
             name: 'Core team'
         })

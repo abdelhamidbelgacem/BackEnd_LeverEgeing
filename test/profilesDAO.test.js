@@ -40,8 +40,8 @@ describe("Profile DAO test", () => {
 
 
     it('should save a Profile', (done) => {
-        let ProfilesDAO = new ProfilesDAO();
-        ProfilesDAO.get({
+        let profilesDAO = new ProfilesDAO();
+        profilesDAO.post({
             shortName: 'CTE',
             name: 'LVA Team'
         })
@@ -53,8 +53,8 @@ describe("Profile DAO test", () => {
             });
     });
     it('should raise an error', (done) => {
-        let ProfilesDAO = new ProfilesDAO();
-        ProfilesDAO.post({
+        let profilesDAO = new ProfilesDAO();
+        profilesDAO.post({
             shortName: 'CTE',
             name: 'LVA team'
         })

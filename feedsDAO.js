@@ -1,5 +1,3 @@
-
-
 /*
 @author :abdelhamid.belgacem
 */
@@ -21,19 +19,23 @@ class feedsDAO {
      * Saves a new feed
      * @param {*} feed 
      */
-    get(feed) {
+       get(idProfile) {
         var _self = this;
-        
-        let item = feed;
-
+        let item = idProfile;
         let params = { 
             TableName: tableName,
+            ConsistentRead:"true",
             Item: item,
             ConditionExpression: "attribute_not_exists(shortName)",
-            ReturnConsumedCapacity: "TOTAL"    
+            ReturnConsumedCapacity: "TOTAL"  , 
+           // Select: ALL_ATTRIBUTES ,
+            IndexName: "FeedIndex",
+            ProjectionExpression: "idProfile, date", 
+            ScanIndexForward: "false",
+            Limit:5
         };
 
-        let dbPutPromise = dynamo.put(params).promise();
+        let dbPutPromise = dynamo.query(params).promise();
     
         return dbPutPromise
             .then( (data) => {

@@ -4,7 +4,6 @@
 @author :abdelhamid.belgacem
 */
 
-
 'use strict';
 
 const AWS = require('aws-sdk');
@@ -51,6 +50,20 @@ class profilesDAO {
         
         let item = profile;
 
+
+        UpdateExpression: "set info.rating = :r, info.plot=:p, info.actors=:a",
+    ExpressionAttributeValues:{
+        ":r":5.5,
+        ":p":"Everything happens all at once.",
+        ":a":["Larry", "Moe", "Curly"]
+    },
+    ReturnValues:"UPDATED_NEW"
+};
+
+console.log("Updating the item...");
+
+
+
         let params = { 
             TableName: tableName,
             Item: item,
@@ -58,7 +71,27 @@ class profilesDAO {
             ReturnConsumedCapacity: "TOTAL"    
         };
 
-        let dbPutPromise = dynamo.put(params).promise();
+
+        /**
+         * UpdateExpression: "set info.rating = :r, info.plot=:p, info.actors=:a",
+    ExpressionAttributeValues:{
+        ":r":5.5,
+        ":p":"Everything happens all at once.",
+        ":a":["Larry", "Moe", "Curly"]
+    },
+    ReturnValues:"UPDATED_NEW"
+};
+
+console.log("Updating the item...");
+docClient.update(params, function(err, data) {
+    if (err) {
+        console.error("Unable to update item. Error JSON:", JSON.stringify(err, null, 2));
+    } else {
+        console.log("UpdateItem succeeded:", JSON.stringify(data, null, 2));
+    }
+});
+         */
+        let dbPutPromise = dynamo.update(params).promise();
     
         return dbPutPromise
             .then( (data) => {
