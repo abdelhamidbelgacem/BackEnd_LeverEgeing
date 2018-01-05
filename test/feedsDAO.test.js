@@ -56,7 +56,6 @@ describe("Feed DAO test", () => {
         let feedsDAO = new FeedsDAO();
         feedsDAO.get("NOT_EXISTING_PROFILE")
             .then((data) => {
-                // TODO test empty feed
                 assert(data.Count == 0);
                 done();
             })
