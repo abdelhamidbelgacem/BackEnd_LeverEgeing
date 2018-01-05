@@ -3,9 +3,9 @@
 */
 
 'use strict';
-/**
+/*******
 Feeds
-*/
+*******/
 
 const appErrors = require('./appErrors');
 
@@ -15,9 +15,9 @@ let feedsDAO = new FeedsDAO();
 const FeedsService = require('./feedsService');
 let feedsService = new FeedsService(feedsDAO);
 
-/***
+/*****
 Profile
-*/
+*****/
 
 const ProfilesDAO = require('./profilesDAO');
 let profilesDAO = new ProfilesDAO();
