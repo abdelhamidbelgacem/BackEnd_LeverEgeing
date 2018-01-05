@@ -16,23 +16,21 @@ class feedsDAO {
     }
 
     /**
-     * Saves a new feed
-     * @param {*} feed 
+     * Get feed related to a profile
+     * @param {*} idProfile the profile for which we want the feed
      */
        get(idProfile) {
         var _self = this;
-        let item = idProfile;
+
         let params = { 
             TableName: tableName,
-            ConsistentRead:"true",
-            Item: item,
-            ConditionExpression: "attribute_not_exists(shortName)",
-            ReturnConsumedCapacity: "TOTAL"  , 
-           // Select: ALL_ATTRIBUTES ,
-            IndexName: "FeedIndex",
-            ProjectionExpression: "idProfile, date", 
-            ScanIndexForward: "false",
-            Limit:5
+            KeyConditionExpression : '#idProfile = :idProfile',
+            ExpressionAttributeValues: {
+                ':idProfile': idProfile
+            },
+            ExpressionAttributeNames: {
+                '#idProfile' : 'idProfile'
+            }
         };
 
         let dbPutPromise = dynamo.query(params).promise();
@@ -46,7 +44,6 @@ class feedsDAO {
                 console.log(error);
                 throw error;
             });
-
     }
 }
 

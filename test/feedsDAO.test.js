@@ -22,6 +22,9 @@ describe("Feed DAO test", () => {
         //this.timeout(50000);
         TestUtils.mockDB()
             .then(function (data) {
+                return TestUtils.populateFeeds()
+            })
+            .then(function (data) {
                 FeedsDAO = require('../feedsDAO');
                 done();
             })
@@ -37,31 +40,28 @@ describe("Feed DAO test", () => {
     });
 
 
-    it('should get a Feed', (done) => {
+    it('should get a Feed list', (done) => {
         let feedsDAO = new FeedsDAO();
         let id=1;
-        feedsDAO.get(id)({
-            shortName: 'CTE',
-            name: 'LVA Team'
-        })
+        feedsDAO.get("123")
             .then((data) => {
+                assert(data.Count > 0);
                 done();
             })
             .catch((error) => {
                 done(error);
             });
     });
-    it('should raise an error', (done) => {
+    it('should get an empty feed list', (done) => {
         let feedsDAO = new FeedsDAO();
-        feedsDAO.get(id)({
-            shortName: 'CTE',
-            name: 'Core team'
-        })
+        feedsDAO.get("NOT_EXISTING_PROFILE")
             .then((data) => {
-                done("The team already exists, it should not be saved");
+                // TODO test empty feed
+                assert(data.Count == 0);
+                done();
             })
             .catch((error) => {
-                done();
+                done(error);
             });
     });
 });

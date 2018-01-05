@@ -12,6 +12,37 @@ module.exports.stopDB = () => {
     dynaliteServer.close();
 };
 
+
+module.exports.populateFeeds = () => {
+    var dynamo = new AWS.DynamoDB.DocumentClient();
+
+    let item = {
+        idProfile: "123",
+        title: "Title 1",
+        description: "Description 1",
+        image: "https://s.tmocache.com/images/png/products/phones/Samsung-Galaxy-J3-Prime/250x270_1.png",
+        date: "2018-01-04"
+    };
+    let params = {
+        TableName: "Feeds",
+        Item: item,
+        ReturnConsumedCapacity: "TOTAL"
+    };
+
+    let dbPutPromise = dynamo.put(params).promise();
+
+    return dbPutPromise
+        .then((data) => {
+            console.log(data);
+            return item;
+        })
+        .catch((error) => {
+            console.log(error);
+            throw error;
+        });
+
+}
+
 module.exports.mockDB = () => {
     AWS.config.update({
         region: "eu-central-1",
@@ -19,7 +50,7 @@ module.exports.mockDB = () => {
     });
 
     var dynamodb = new AWS.DynamoDB();
-
+    
     return new Promise((resolve, reject) => {
         dynaliteServer.listen(8080, function (err) {
             dynamodb.listTables({}, function (err, data) {
@@ -29,10 +60,12 @@ module.exports.mockDB = () => {
                         dynamodb.createTable({
                             TableName: "Feeds",
                             KeySchema: [
-                                { AttributeName: "shortName", KeyType: "HASH" }  //Partition key
+                                { AttributeName: "idProfile", KeyType: "HASH" },  //Partition key
+                                { AttributeName: "date", KeyType: "RANGE" }
                             ],
                             AttributeDefinitions: [
-                                { AttributeName: "shortName", AttributeType: "S" }
+                                { AttributeName: "idProfile", AttributeType: "S" },
+                                { AttributeName: "date", AttributeType: "S" }
                             ],
                             ProvisionedThroughput: {
                                 ReadCapacityUnits: 10,
@@ -49,16 +82,17 @@ module.exports.mockDB = () => {
                                     }, 1000);
                                 }
                             });
+
                     }
                     else { resolve(); }
                 }
             });
         });
     });
-	
-	
-	
-	 var dynamodb = new AWS.DynamoDB();
+
+
+
+    var dynamodb = new AWS.DynamoDB();
 
     return new Promise((resolve, reject) => {
         dynaliteServer.listen(8080, function (err) {
@@ -88,6 +122,10 @@ module.exports.mockDB = () => {
                                         resolve(data);
                                     }, 1000);
                                 }
+                            })
+                            .then((data) => {
+
+
                             });
                     }
                     else { resolve(); }
@@ -95,5 +133,5 @@ module.exports.mockDB = () => {
             });
         });
     });
-	
+
 };
