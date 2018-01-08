@@ -1,0 +1,498 @@
+ # @author:Abdelhamid.belgacem
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "Your first Profiles API with Amazon API Gateway. This is a sample API that integrates via HTTP with our demo Profile Store endpoints",
+    "title": "ProfileStore__08_01_2018"
+  },
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "tags": [
+          "Profiles"
+        ],
+        "description": "ProfilesStore HTML web page containing API usage information",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "text/html"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "headers": {
+              "Content-Type": {
+                "type": "string",
+                "description": "Media type of request"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "responses": {
+            "default": {
+              "statusCode": "200",
+              "responseParameters": {
+                "method.response.header.Content-Type": "'text/html'"
+              },
+              "responseTemplates": {
+                "text/html": "<html>\n    <head>\n        <style>\n        body {\n            color: #333;\n            font-family: Sans-serif;\n            max-width: 800px;\n            margin: auto;\n        }\n        </style>\n    </head>\n    <body>\n        <h1>Welcome to your Profile Store API</h1>\n        <p>\n            You have succesfully deployed your first API. You are seeing this HTML page because the <code>GET</code> method to the root resource of your API returns this content as a Mock integration.\n        </p>\n        <p>\n            The Profile Store API contains the <code>/profiles</code> and <code>/profiles/{idProfile}</code> resources. By making a <a href=\"/$context.stage/profiles/\" target=\"_blank\"><code>GET</code> request</a> to <code>/profiles</code> you can retrieve a list of profiles in your API. If you are looking for a specific profile, for example the profile with ID 1, you can make a <a href=\"/$context.stage/profiles/1\" target=\"_blank\"><code>GET</code> request</a> to <code>/profiles/1</code>.\n        </p>\n        <p>\n            You can use a REST client such as  to test the <code>POST</code> methods in your API to create a new profile. Use the sample body below to send the <code>POST</code> request:\n        </p>\n        <pre>\n{\n    \"Name\" : \"Surname\",\n    \"PhoneNumber\",\n  \"photo\" ,\n  \"Email\",\n  \"adressePostale\",\n  \"Role\": "Abdelhamid" \n}\n        </pre>\n    </body>\n</html>"
+              }
+            }
+          },
+          "passthroughBehavior": "when_no_match",
+          "requestTemplates": {
+            "application/json": "{\"statusCode\": 200}"
+          },
+          "type": "mock"
+        }
+      }
+    },
+    "/profiles": {
+      "get": {
+        "tags": [
+          "profiless"
+        ],
+        "summary": "List all profiles",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "type",
+            "in": "query",
+            "description": "The type of profile to retrieve",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number of results to return.",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/Profiles"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string",
+                "description": "URI that may access the resource"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "responses": {
+            "default": {
+              "statusCode": "200",
+              "responseParameters": {
+                "method.response.header.Access-Control-Allow-Origin": "'*'"
+              }
+            }
+          },
+          "requestParameters": {
+            "integration.request.querystring.page": "method.request.querystring.page",
+            "integration.request.querystring.type": "method.request.querystring.type"
+          },
+          "uri": "arn:aws:apigateway:eu-central-1:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-central-1:698181446882:function:${stageVariables.getProfilesLambda}/invocations",
+          "passthroughBehavior": "when_no_match",
+          "httpMethod": "GET",
+          "type": "http"
+        }
+      },
+   
+      "options": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string",
+                "description": "URI that may access the resource"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string",
+                "description": "Method or methods allowed when accessing the resource"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string",
+                "description": "Used in response to a preflight request to indicate which HTTP headers can be used when making the request."
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "responses": {
+            "default": {
+              "statusCode": "200",
+              "responseParameters": {
+                "method.response.header.Access-Control-Allow-Methods": "'POST,GET,OPTIONS'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key'",
+                "method.response.header.Access-Control-Allow-Origin": "'*'"
+              }
+            }
+          },
+          "passthroughBehavior": "when_no_match",
+          "requestTemplates": {
+            "application/json": "{\"statusCode\": 200}"
+          },
+          "type": "mock"
+        }
+      }
+    },
+    "/profiles/{idProfile}": {
+      "get": {
+        "tags": [
+          "profiles"
+        ],
+        "summary": "Info for a specific profile",
+        "operationId": "GetProfile",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "profileId",
+            "in": "path",
+            "description": "The id of the profile to retrieve",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/Profile"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string",
+                "description": "URI that may access the resource"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "responses": {
+            "default": {
+              "statusCode": "200",
+              "responseParameters": {
+                "method.response.header.Access-Control-Allow-Origin": "'*'"
+              }
+            }
+          },
+          "requestParameters": {
+            "integration.request.path.idProfile": "method.request.path.idProfile"
+          },
+          "uri": "arn:aws:apigateway:eu-central-1:lambda:path/2015-03-31/functions/arn:aws:lambda:eu-central-1:698181446882:function:${stageVariables.getProfilesLambda}/invocations/{idProfile}",
+          "passthroughBehavior": "when_no_match",
+          "httpMethod": "GET",
+          "type": "http"
+        }
+      },
+      "options": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "idProfile",
+            "in": "path",
+            "description": "The id of the profile to retrieve",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/Empty"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string",
+                "description": "URI that may access the resource"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string",
+                "description": "Method or methods allowed when accessing the resource"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string",
+                "description": "Used in response to a preflight request to indicate which HTTP headers can be used when making the request."
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "responses": {
+            "default": {
+              "statusCode": "200",
+              "responseParameters": {
+                "method.response.header.Access-Control-Allow-Methods": "'GET,OPTIONS'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key'",
+                "method.response.header.Access-Control-Allow-Origin": "'*'"
+              }
+            }
+          },
+          "passthroughBehavior": "when_no_match",
+          "requestTemplates": {
+            "application/json": "{\"statusCode\": 200}"
+          },
+          "type": "mock"
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Profiles": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Profile"
+      }
+    },
+    "Empty": {
+      "type": "object"
+    },
+    "NewProfileResponse": {
+      "type": "object",
+      "properties": {
+        "profile": {
+          "$ref": "#/definitions/Profile"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    },
+    "Profile": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "Name": {
+          "type": "string"
+        },
+        "Surname": {
+          "type": "string"
+        },
+		"PhoneNumber": {
+          "type": "string"
+        },
+		"Photo": {
+          "type": "string"
+        },
+		"Email": {
+          "type": "string"
+        },
+		"AdressePostale": {
+          "type": "string"
+        },
+		"Role": {
+          "type": "string"
+        }
+      }
+    },
+    "NewProfile": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "$ref": "#/definitions/ProfileType"
+        },
+        "date": {
+          "type": "number"
+        }
+      }
+    }
+    }
+  },
+  "x-amazon-apigateway-documentation": {
+    "version": "v2.1",
+    "createdDate": "2016-11-17T07:03:59Z",
+    "documentationParts": [
+      {
+        "location": {
+          "type": "API"
+        },
+        "properties": {
+          "info": {
+            "description": "Your first API with Amazon API Gateway. This is a sample API that integrates via HTTP with our demo Profile Store endpoints"
+          }
+        }
+      },
+      {
+        "location": {
+          "type": "METHOD",
+          "method": "GET"
+        },
+        "properties": {
+          "tags": [
+            "profiles"
+          ],
+          "description": "ProfileStore HTML web page containing API usage information"
+        }
+      },
+      {
+        "location": {
+          "type": "METHOD",
+          "path": "/profiles/{idProfile}",
+          "method": "GET"
+        },
+        "properties": {
+          "tags": [
+            "profiles"
+          ],
+          "summary": "Info for a specific profile"
+        }
+      },
+      {
+        "location": {
+          "type": "METHOD",
+          "path": "/profiles",
+          "method": "GET"
+        },
+        "properties": {
+          "tags": [
+            "profiles"
+          ],
+          "summary": "List all profiles"
+        }
+      },
+      {
+        "location": {
+          "type": "METHOD",
+          "path": "/profiles",
+          "method": "POST"
+        },
+        "properties": {
+          "tags": [
+            "profiles"
+          ],
+          "summary": "Create a profile"
+        }
+      },
+      {
+        "location": {
+          "type": "PATH_PARAMETER",
+          "path": "/profiles/{idProfile}",
+          "method": "*",
+          "name": "idProfile"
+        },
+        "properties": {
+          "description": "The id of the profile to retrieve"
+        }
+      },
+      {
+        "location": {
+          "type": "QUERY_PARAMETER",
+          "path": "/profiles",
+          "method": "GET",
+          "name": "page"
+        },
+        "properties": {
+          "description": "Page number of results to return."
+        }
+      },
+      {
+        "location": {
+          "type": "QUERY_PARAMETER",
+          "path": "/profiles",
+          "method": "GET",
+          "name": "type"
+        },
+        "properties": {
+          "description": "The type of profile to retrieve"
+        }
+      },
+      {
+        "location": {
+          "type": "REQUEST_BODY",
+          "path": "/profiles",
+          "method": "POST"
+        },
+        "properties": {
+          "description": "Profile object that needs to be added to the store"
+        }
+      },
+      {
+        "location": {
+          "type": "RESPONSE",
+          "method": "*",
+          "statusCode": "200"
+        },
+        "properties": {
+          "description": "Successful operation"
+        }
+      },
+      {
+        "location": {
+          "type": "RESPONSE_HEADER",
+          "method": "OPTIONS",
+          "statusCode": "200",
+          "name": "Access-Control-Allow-Headers"
+        },
+        "properties": {
+          "description": "Used in response to a preflight request to indicate which HTTP headers can be used when making the request."
+        }
+      },
+      {
+        "location": {
+          "type": "RESPONSE_HEADER",
+          "method": "OPTIONS",
+          "statusCode": "200",
+          "name": "Access-Control-Allow-Methods"
+        },
+        "properties": {
+          "description": "Method or methods allowed when accessing the resource"
+        }
+      },
+      {
+        "location": {
+          "type": "RESPONSE_HEADER",
+          "method": "*",
+          "statusCode": "200",
+          "name": "Access-Control-Allow-Origin"
+        },
+        "properties": {
+          "description": "URI that may access the resource"
+        }
+      },
+      {
+        "location": {
+          "type": "RESPONSE_HEADER",
+          "method": "GET",
+          "statusCode": "200",
+          "name": "Content-Type"
+        },
+        "properties": {
+          "description": "Media type of request"
+        }
+      }
+    ]
+  }
+}

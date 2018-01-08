@@ -1,29 +1,29 @@
-/*
-@author :abdelhamid.belgacem
 
-*/
-
+/**
+ * @author:Abdelhamid.belgacem
+ */
 
 /*global describe, it, before, beforeEach, after, afterEach */
 
+
+
 'use strict';
 
-let idProfile="123";
-require('dotenv').config({path: './test/.env'});
-var TestUtils = require('./testUtils');
+require('dotenv').config({path: '../.env'});
+var TestUtils = require('../testUtils');
 
 var assert = require('chai').assert;
 var should = require('chai').should();
 
-var FeedsService;
+var ProfilesService;
 
-describe("Feed Service test", () => {
+describe("Profile Service test", () => {
 
     before( (done) => {
         //this.timeout(50000);
         TestUtils.mockDB()
             .then(function (data) {
-                FeedsService = require('../feedsService');
+                ProfilesService = require('../../profiles/profilesService');
 				console.log("OKKKKKK");               
 			   done();
             })
@@ -39,11 +39,11 @@ describe("Feed Service test", () => {
     });
 
 
-    it('should get a Feed', (done) => {
-        let feedsService = new FeedsService();
-        feedsService.get("123")
+    it('should get a Profile', (done) => {
+        let profilesService = new ProfilesService();
+        profilesService.get("123")
             .then((data) => {
-			 console.log("KKKKKKOOOOOOOO"); 
+			 console.log("KKKKKKKKKKKKOOOOOOOOOOOOOOOOO"); 
 			 assert(data.Count > 0);
 			 done();
             })
@@ -52,8 +52,8 @@ describe("Feed Service test", () => {
             });
     });
     it('should raise an error', (done) => {
-        let feedsService = new FeedsService();
-		feedsService.get("NOT_EXISTING_PROFILE")
+        let profilesService = new ProfilesService();
+		profilesService.get("NOT_EXISTING_PROFILE")
             .then((data) => {
                 assert(data.Count == 0);
                 done();

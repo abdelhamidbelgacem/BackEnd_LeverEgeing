@@ -1,6 +1,6 @@
-/*
-@author :abdelhamid.belgacem
-*/
+/**
+ * @author:Abdelhamid.belgacem
+ */
 
 
 const dynalite = require('dynalite');
@@ -16,13 +16,54 @@ module.exports.stopDB = () => {
 module.exports.populateFeeds = () => {
     var dynamo = new AWS.DynamoDB.DocumentClient();
 
-    let item = {
+    let item = 
+    [
+    
+        {
         idProfile: "123",
         title: "Title 1",
         description: "Description 1",
         image: "https://s.tmocache.com/images/png/products/phones/Samsung-Galaxy-J3-Prime/250x270_1.png",
         date: "2018-01-04"
-    };
+        },
+        {
+            idProfile: "123",
+            title: "Title 1",
+            description: "Description 1",
+            image: "https://s.tmocache.com/images/png/products/phones/Samsung-Galaxy-J3-Prime/250x270_1.png",
+            date: "2018-01-04"
+        },
+        {
+            idProfile: "123",
+            title: "Title 1",
+            description: "Description 1",
+            image: "https://s.tmocache.com/images/png/products/phones/Samsung-Galaxy-J3-Prime/250x270_1.png",
+            date: "2018-01-04"
+        },
+        {
+            idProfile: "123",
+            title: "Title 1",
+            description: "Description 1",
+            image: "https://s.tmocache.com/images/png/products/phones/Samsung-Galaxy-J3-Prime/250x270_1.png",
+            date: "2018-01-04"
+        },
+        {
+            idProfile: "123",
+            title: "Title 1",
+            description: "Description 1",
+            image: "https://s.tmocache.com/images/png/products/phones/Samsung-Galaxy-J3-Prime/250x270_1.png",
+            date: "2018-01-04"
+        },
+        {
+            idProfile: "123",
+            title: "Title 1",
+            description: "Description 1",
+            image: "https://s.tmocache.com/images/png/products/phones/Samsung-Galaxy-J3-Prime/250x270_1.png",
+            date: "2018-01-04"
+        }
+
+    
+    ]
     let params = {
         TableName: "Feeds",
         Item: item,
@@ -74,7 +115,7 @@ module.exports.mockDB = () => {
                         },
                             function (err, data) {
                                 if (err) {
-                                    console.error("Unable to create table. Error JSON:", JSON.stringify(err, null, 2));
+                                    console.error("Unable to create table Feeds. Error JSON:", JSON.stringify(err, null, 2));
                                     reject(err);
                                 } else {
                                     setTimeout(() => {
@@ -90,7 +131,151 @@ module.exports.mockDB = () => {
         });
     });
 
-
+   
+    module.exports.populateProfiles = () => {
+        var dynamo = new AWS.DynamoDB.DocumentClient();
+    
+        let item =
+        [
+        {
+            idProfile: "124",
+            civilite: "M",
+            name: "Nouri",
+            surname: "Abdelhamid",
+            email:"abdelhamid.nouri@ifsalpha.com",
+            photo : "https://s.tmocache.com/images/png/products/phones/Samsung-Galaxy-J3-Prime/250x270_1.png",
+            birthdate: "1990-04-30",
+            adressePostale:"23,rue de Rulhière 93150 Blanc Mesnil Saint denis Paris Françe",
+            role:"CareGiver"
+        },
+        {
+            idProfile: "125",
+            civilite: "M",
+            name: "Nouri",
+            surname: "Abdelhamid",
+            email:"abdelhamid.nouri@ifsalpha.com",
+            photo : "https://s.tmocache.com/images/png/products/phones/Samsung-Galaxy-J3-Prime/250x270_1.png",
+            birthdate: "1990-04-30",
+            adressePostale:"23,rue de Rulhière 93150 Blanc Mesnil Saint denis Paris Françe",
+            role:"CareGiver"
+        },
+        {
+            idProfile: "126",
+            civilite: "M",
+            name: "Nouri",
+            surname: "Abdelhamid",
+            email:"abdelhamid.nouri@ifsalpha.com",
+            photo : "https://s.tmocache.com/images/png/products/phones/Samsung-Galaxy-J3-Prime/250x270_1.png",
+            birthdate: "1990-04-30",
+            adressePostale:"23,rue de Rulhière 93150 Blanc Mesnil Saint denis Paris Françe",
+            role:"CareGiver"
+        },
+        {
+            idProfile: "127",
+            civilite: "M",
+            name: "Nouri",
+            surname: "Abdelhamid",
+            email:"abdelhamid.nouri@ifsalpha.com",
+            photo : "https://s.tmocache.com/images/png/products/phones/Samsung-Galaxy-J3-Prime/250x270_1.png",
+            birthdate: "1990-04-30",
+            adressePostale:"23,rue de Rulhière 93150 Blanc Mesnil Saint denis Paris Françe",
+            role:"CareGiver"
+        },
+        {
+            idProfile: "128",
+            civilite: "M",
+            name: "Nouri",
+            surname: "Abdelhamid",
+            email:"abdelhamid.nouri@ifsalpha.com",
+            photo : "https://s.tmocache.com/images/png/products/phones/Samsung-Galaxy-J3-Prime/250x270_1.png",
+            birthdate: "1990-04-30",
+            adressePostale:"23,rue de Rulhière 93150 Blanc Mesnil Saint denis Paris Françe",
+            role:"CareGiver"
+        },
+        {
+            idProfile: "129",
+            civilite: "M",
+            name: "Nouri",
+            surname: "Abdelhamid",
+            email:"abdelhamid.nouri@ifsalpha.com",
+            photo : "https://s.tmocache.com/images/png/products/phones/Samsung-Galaxy-J3-Prime/250x270_1.png",
+            birthdate: "1990-04-30",
+            adressePostale:"23,rue de Rulhière 93150 Blanc Mesnil Saint denis Paris Françe",
+            role:"CareGiver"
+        },
+        {
+            idProfile: "130",
+            civilite: "M",
+            name: "Nouri",
+            surname: "Abdelhamid",
+            email:"abdelhamid.nouri@ifsalpha.com",
+            photo : "https://s.tmocache.com/images/png/products/phones/Samsung-Galaxy-J3-Prime/250x270_1.png",
+            birthdate: "1990-04-30",
+            adressePostale:"23,rue de Rulhière 93150 Blanc Mesnil Saint denis Paris Françe",
+            role:"CareGiver"
+        },
+        {
+            idProfile: "131",
+            civilite: "M",
+            name: "Nouri",
+            surname: "Abdelhamid",
+            email:"abdelhamid.nouri@ifsalpha.com",
+            photo : "https://s.tmocache.com/images/png/products/phones/Samsung-Galaxy-J3-Prime/250x270_1.png",
+            birthdate: "1990-04-30",
+            adressePostale:"23,rue de Rulhière 93150 Blanc Mesnil Saint denis Paris Françe",
+            role:"CareGiver"
+        },
+        {
+            idProfile: "132",
+            civilite: "M",
+            name: "Nouri",
+            surname: "Abdelhamid",
+            email:"abdelhamid.nouri@ifsalpha.com",
+            photo : "https://s.tmocache.com/images/png/products/phones/Samsung-Galaxy-J3-Prime/250x270_1.png",
+            birthdate: "1990-04-30",
+            adressePostale:"23,rue de Rulhière 93150 Blanc Mesnil Saint denis Paris Françe",
+            role:"CareGiver"
+        },
+        {
+            idProfile: "133",
+            civilite: "M",
+            name: "Nouri",
+            surname: "Abdelhamid",
+            email:"abdelhamid.nouri@ifsalpha.com",
+            photo : "https://s.tmocache.com/images/png/products/phones/Samsung-Galaxy-J3-Prime/250x270_1.png",
+            birthdate: "1990-04-30",
+            adressePostale:"23,rue de Rulhière 93150 Blanc Mesnil Saint denis Paris Françe",
+            role:"CareGiver"
+        },
+        {
+            idProfile: "134",
+            civilite: "M",
+            name: "Nouri",
+            surname: "Abdelhamid",
+            email:"abdelhamid.nouri@ifsalpha.com",
+            photo : "https://s.tmocache.com/images/png/products/phones/Samsung-Galaxy-J3-Prime/250x270_1.png",
+            birthdate: "1990-04-30",
+            adressePostale:"23,rue de Rulhière 93150 Blanc Mesnil Saint denis Paris Françe",
+            role:"CareGiver"
+        }
+    ]
+        let params = {
+            TableName: "Profiles",
+            Item: item
+        };
+        let dbPutPromise = dynamo.put(params).promise();
+    
+        return dbPutPromise
+            .then((data) => {
+                console.log(data);
+                return item;
+            })
+            .catch((error) => {
+                console.log(error);
+                throw error;
+            });
+    
+    }
 
     var dynamodb = new AWS.DynamoDB();
 
@@ -101,12 +286,14 @@ module.exports.mockDB = () => {
                 else {
                     if (data.TableNames.length <= 0) {
                         dynamodb.createTable({
-                            TableName: "profiles",
+                            TableName: "Profiles",
                             KeySchema: [
-                                { AttributeName: "shortName", KeyType: "HASH" }  //Partition key
+                                { AttributeName: "idProfile", KeyType: "HASH" },  //Partition key
+                                { AttributeName: "email", KeyType: "RANGE" }
                             ],
                             AttributeDefinitions: [
-                                { AttributeName: "shortName", AttributeType: "S" }
+                                { AttributeName: "idProfile", AttributeType: "S" },
+                                { AttributeName: "email", AttributeType: "S" }
                             ],
                             ProvisionedThroughput: {
                                 ReadCapacityUnits: 10,
@@ -115,18 +302,15 @@ module.exports.mockDB = () => {
                         },
                             function (err, data) {
                                 if (err) {
-                                    console.error("Unable to create table. Error JSON:", JSON.stringify(err, null, 2));
+                                    console.error("Unable to create table Profiles. Error JSON:", JSON.stringify(err, null, 2));
                                     reject(err);
                                 } else {
                                     setTimeout(() => {
                                         resolve(data);
                                     }, 1000);
                                 }
-                            })
-                            .then((data) => {
-
-
                             });
+
                     }
                     else { resolve(); }
                 }
@@ -134,4 +318,41 @@ module.exports.mockDB = () => {
         });
     });
 
+    /**
+     * Update User Profile Into Database
+     */
+
+
+    module.exports.populateProfiles = () => {
+        var dynamo = new AWS.DynamoDB.DocumentClient();
+    
+        let item =
+        [
+        {
+            idProfile: "124",
+            civilite: "Mlle",
+            name: "Nouri_Abdelhamid",
+            surname: "Abdelhamid_Dimetri",
+            email:"abdelhamid.nouri_Google@ifsalpha.com",
+            photo : "https://s.tmocache.com/images/png/products/phones/Samsung-Galaxy-J3-Prime/250x270_1.png",
+            birthdate: "1960-04-30",
+            adressePostale:"178,rue de Rulhière 93150 Blanc Mesnil Saint denis Paris Françe",
+            role:"CareGiver/SENIOR"
+        }
+        ]
+        let params = {
+            TableName: "Profiles",
+            Item: item,
+        };
+        console.log("##############Updating the Profile User into Dynamo DB Databse.....");
+        
+        dynamo.update(params, function(err, data) {
+            if (err) {
+                console.error("Unable to update Profile User. Error JSON:", JSON.stringify(err, null, 2));
+            } else {
+                console.log("Update Profile User succeeded:", JSON.stringify(data, null, 2));
+            }
+        });
+    
+    }
 };

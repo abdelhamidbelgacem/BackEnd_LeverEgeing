@@ -1,8 +1,9 @@
+
 #@author :abdelhamid.belgacem
 
 AWSTemplateFormatVersion: '2017-09-09'
 Transform: AWS::Serverless-2016-10-31
-Description: Feeds management system
+Description: Profiles management system
 Parameters:
   DynamoDBStack:
     Type: String
@@ -11,7 +12,7 @@ Parameters:
     Default: v1
 
 Resources:        
-  getFeedsLambda:
+  getProfilesLambda:
     Type: AWS::Serverless::Function
     Properties:
       Handler: index.get
@@ -23,58 +24,58 @@ Resources:
         - AmazonDynamoDBFullAccess
       Environment:
         Variables:
-          Feeds_TABLE_NAME:
+          Profiles_TABLE_NAME:
             Fn::ImportValue:
-              !Sub ${DynamoDBStack}-FeedsDynamoDBTable
+              !Sub ${DynamoDBStack}-ProfilesDynamoDBTable
       Events:
-        getFeedsEvent:
+        getProfilesEvent:
           Type: Api
           Properties:
-            Path: /Feeds
-            Method: get
-            RestApiId : !Ref FeedsApi
+            Path: /Profiles
+            Method: post
+            RestApiId : !Ref ProfilesApi
 
-  FeedsApi:
+  ProfilesApi:
     Type: AWS::Serverless::Api
     Properties:
-      DefinitionUri: ./feeds-api-swagger.yml
+      DefinitionUri: ./profiles-api-swagger.yml
       StageName: deployed
       Variables:
-        getFeedsLambda: !Ref getFeedsLambda
+        getProfilesLambda: !Ref getProfilesLambda
 
-  FeedsDomainName:
+  ProfilesDomainName:
     Type: AWS::ApiGateway::DomainName
     Properties: 
     
-    #arn:aws:lambda:eu-central-1:698181446882:function:GetFeeds
+    #arn:aws:lambda:eu-central-1:698181446882:function:GetProfiles
         CertificateArn: arn:aws:lambda:eu-central-1:698181446882:certificate/2ea697a4-582d-4a17-9db8-189a98bc1121
       DomainName: 
         Fn::Join: [
           ".",
           [
             !Ref "AWS::StackName",
-            "feeds.ifsalpha.com"
+            "profiless.ifsalpha.com"
           ]
         ]
 
-  FeedsBasePathMapping:
+  ProfilesBasePathMapping:
       Type: AWS::ApiGateway::BasePathMapping
       DependsOn:
-        - FeedsApideployedStage
-        - FeedsDomainName
+        - ProfilesApideployedStage
+        - ProfilesDomainName
       Properties:
-        DomainName: !Ref FeedsDomainName
+        DomainName: !Ref ProfilesDomainName
         BasePath: !Sub ${ApiBasePath}
-        RestApiId: !Ref FeedsApi
+        RestApiId: !Ref ProfilesApi
         Stage: deployed
 
-  FeedsUsagePlan:
+  ProfilesUsagePlan:
     Type: AWS::ApiGateway::UsagePlan
     DependsOn:
-        - FeedsApideployedStage
+        - ProfilesApideployedStage
     Properties:
       ApiStages:
-        - ApiId: !Ref FeedsApi
+        - ApiId: !Ref ProfilesApi
           Stage: deployed
       Throttle:
         BurstLimit: 500

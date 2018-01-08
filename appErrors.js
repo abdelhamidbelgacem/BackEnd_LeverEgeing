@@ -1,7 +1,10 @@
-/*
-@author :abdelhamid.belgacem
-*/
 
+/**
+ * @author:Abdelhamid.belgacem
+ */
+
+
+ 
 'use strict';
 
 class AppError extends Error {

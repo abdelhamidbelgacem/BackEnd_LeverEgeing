@@ -1,0 +1,33 @@
+
+ # @author:Abdelhamid.belgacem
+
+AWSTemplateFormatVersion: '2017-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: profiles management system
+Resources:
+  profilesDynamoDBTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+      - AttributeName: shortName
+        AttributeType: S
+      KeySchema:
+      - AttributeName: shortName
+        KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: '5'
+        WriteCapacityUnits: '5'
+      StreamSpecification:
+        StreamViewType: NEW_AND_OLD_IMAGES
+
+Outputs:
+  profilesDynamoDBTableOutput:
+    Value: !Ref profilesDynamoDBTable
+    Export:
+      Name: !Sub "${AWS::StackName}-profilesDynamoDBTable"
+
+  profilesDynamoDBTableStreamOutput:
+    Value: !GetAtt profilesDynamoDBTable.StreamArn
+    Export:
+      Name: !Sub "${AWS::StackName}-profilesDynamoDBTableStream"
+  

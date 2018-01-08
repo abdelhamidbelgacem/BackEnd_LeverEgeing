@@ -1,31 +1,30 @@
-/*
-@author :abdelhamid.belgacem
-
-*/
+/**
+ * @author:Abdelhamid.belgacem
+ */
 
 
 /*global describe, it, before, beforeEach, after, afterEach */
 
 'use strict';
 
-require('dotenv').config({path: './test/.env'});
-var TestUtils = require('./testUtils');
+require('dotenv').config({path: '../.env'});
+var TestUtils = require('../testUtils');
 
 var assert = require('chai').assert;
 var should = require('chai').should();
 
-var FeedsDAO;
+var ProfilesDAO;
 
-describe("Feed DAO test", () => {
+describe("Profile DAO test", () => {
 
     before( (done) => {
         //this.timeout(50000);
         TestUtils.mockDB()
             .then(function (data) {
-                return TestUtils.populateFeeds()
+                return TestUtils.populateProfiles()
             })
             .then(function (data) {
-                FeedsDAO = require('../feedsDAO');
+                ProfilesDAO = require('../../profiles/profilesDAO');
                 done();
             })
             .catch(function (err) {
@@ -40,10 +39,9 @@ describe("Feed DAO test", () => {
     });
 
 
-    it('should get a Feed list', (done) => {
-        let feedsDAO = new FeedsDAO();
-        let id=1;
-        feedsDAO.get("123")
+    it('should get a Profile list', (done) => {
+        let profilesDAO = new ProfilesDAO();
+        profilesDAO.get("123")
             .then((data) => {
                 assert(data.Count > 0);
                 done();
@@ -52,9 +50,9 @@ describe("Feed DAO test", () => {
                 done(error);
             });
     });
-    it('should get an empty feed list', (done) => {
-        let feedsDAO = new FeedsDAO();
-        feedsDAO.get("NOT_EXISTING_PROFILE")
+    it('should get an empty profile list', (done) => {
+        let profilesDAO = new ProfilesDAO();
+        profilesDAO.get("NOT_EXISTING_PROFILE")
             .then((data) => {
                 assert(data.Count == 0);
                 done();

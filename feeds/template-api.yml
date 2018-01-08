@@ -1,0 +1,93 @@
+
+
+#@author :abdelhamid.belgacem
+
+
+AWSTemplateFormatVersion: '2017-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Feeds management system
+Parameters:
+  DynamoDBStack:
+    Type: String
+  ApiBasePath:
+    Type: String
+    Default: v1
+
+Resources:        
+  getFeedsLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: index.get
+      Runtime: nodejs6.10
+      Timeout: 1
+      MemorySize: 128
+      CodeUri: .
+      Policies: 
+        - AmazonDynamoDBFullAccess
+      Environment:
+        Variables:
+          Feeds_TABLE_NAME:
+            Fn::ImportValue:
+              !Sub ${DynamoDBStack}-FeedsDynamoDBTable
+      Events:
+        getFeedsEvent:
+          Type: Api
+          Properties:
+            Path: /Feeds
+            Method: get
+            RestApiId : !Ref FeedsApi
+
+  FeedsApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      DefinitionUri: ./feeds-api-swagger.yml
+      StageName: deployed
+      Variables:
+        getFeedsLambda: !Ref getFeedsLambda
+
+  FeedsDomainName:
+    Type: AWS::ApiGateway::DomainName
+    Properties: 
+    
+    #arn:aws:lambda:eu-central-1:698181446882:function:GetFeeds
+        CertificateArn: arn:aws:lambda:eu-central-1:698181446882:certificate/2ea697a4-582d-4a17-9db8-189a98bc1121
+      DomainName: 
+        Fn::Join: [
+          ".",
+          [
+            !Ref "AWS::StackName",
+            "feeds.ifsalpha.com"
+          ]
+        ]
+
+  FeedsBasePathMapping:
+      Type: AWS::ApiGateway::BasePathMapping
+      DependsOn:
+        - FeedsApideployedStage
+        - FeedsDomainName
+      Properties:
+        DomainName: !Ref FeedsDomainName
+        BasePath: !Sub ${ApiBasePath}
+        RestApiId: !Ref FeedsApi
+        Stage: deployed
+
+  FeedsUsagePlan:
+    Type: AWS::ApiGateway::UsagePlan
+    DependsOn:
+        - FeedsApideployedStage
+    Properties:
+      ApiStages:
+        - ApiId: !Ref FeedsApi
+          Stage: deployed
+      Throttle:
+        BurstLimit: 500
+        RateLimit: 50
+      UsagePlanName:
+        Fn::Join: [
+            "-",
+            [
+              !Ref "AWS::StackName",
+              "usage",
+              "plan"
+            ]
+          ]

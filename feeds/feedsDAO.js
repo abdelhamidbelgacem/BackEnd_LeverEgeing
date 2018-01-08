@@ -1,7 +1,6 @@
-/*
-@author :abdelhamid.belgacem
-*/
-
+/**
+ * @author:Abdelhamid.belgacem
+ */
 
 'use strict';
 
